@@ -5,13 +5,14 @@ import AddIcon from '@mui/icons-material/Add';
 import Fab from '@mui/material/Fab';
 //for collaspe and expand of text area
 import Zoom from '@mui/material/Zoom';
+import axios from "axios";
 
 export default function CreateArea(props) {
 
   //set a 1 note state 
   const [note, setNote] = useState({
     title: "",
-    content: ""
+    description: ""
   });
 
   //use the state for expanding and collapsing of text area
@@ -31,35 +32,47 @@ export default function CreateArea(props) {
     // name === "title" ? setNote({ title: val }, { content: note.content } ):
     //    name === "content" && setNote({ title: note.title }, { content: val })
   }
+  function onSubmit(e){
+
+      axios.post('http://localhost:5000', note)
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+      props.handleClick(note);
+      setNote({ title: "", description: "" });
+      setExpand(false);
+
+      e.preventDefault();
+      };
+
 
   //to expand on onclick
-  function exp(){
+  function exp() {
     setExpand(true);
   }
   //input form sends the data to handle the change and also sets the value
   //button onclick method take the handle click which is in the app.js and send the note to handleclick function
   //and sets the note
-  
-  return (
-    
-    <div>
-      <form className="create-note">
-      {expand && <input onChange={handleChange} name="title" placeholder="Title" value={note.title} />}
-       
 
-        <textarea onClick={exp} onChange={handleChange} name="content" placeholder="Take a note..." 
-        rows={expand ? 3:1} value={note.content} />
-     
-        <Zoom in={expand}><Fab onClick={(e) => {
-          props.handleClick(note);
-          setNote({ title: "", content: "" });
-          setExpand(false);
-          e.preventDefault();
-        }}
-        ><AddIcon /></Fab> 
+  return (
+
+    <div>
+      <form className="create-note" >
+        {expand && <input onChange={handleChange} name="title" placeholder="Title" value={note.title} />}
+
+
+        <textarea onClick={exp} onChange={handleChange} name="description" placeholder="Take a note..."
+          rows={expand ? 3 : 1} value={note.description} />
+
+        <Zoom in={expand}><Fab onClick={onSubmit}
+        ><AddIcon /></Fab>
         </Zoom>
       </form>
-      
+
     </div>
   );
 }
