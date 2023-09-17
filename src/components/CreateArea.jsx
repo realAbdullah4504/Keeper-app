@@ -34,7 +34,7 @@ export default function CreateArea(props) {
   }
   function onSubmit(e){
 
-      axios.post('http://localhost:5000', note)
+      axios.post('http://localhost:5000/notes', note)
         .then(function (response) {
           console.log(response);
         })

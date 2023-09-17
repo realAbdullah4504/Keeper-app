@@ -20,7 +20,7 @@ router.route('/')
             .then(() => res.json('note added successfully'))
             .catch((err) => res.status(400).json('error' + err));
     });
-    router.route('/:id')
+router.route('/:id')
     .delete((req, res) => {
         Note.findByIdAndDelete(req.params.id)
             .then(() => { res.json("deleted"); })

@@ -8,13 +8,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 // process.env.ATLAS_URI;||
-const Uri = "mongodb://localhost:27017/exercise-tracker";
+const Uri = process.env.ATLAS_URI;
 mongoose.connect(Uri, { useNewUrlParser: true });
 
 //for the routes notes
-const notesRouter = require('./routes/notes.routes');
+const notesRouter = require('./src/routes/notes.routes');
+const usersRouter = require('./src/routes/users.routes');
 
-app.use('/', notesRouter); //if anyone go to route '/' it will redirect to /notes
+app.use('/notes', notesRouter); //if anyone go to route '/' it will redirect to /notes
+app.use('/users', usersRouter); //if anyone go to route '/' it will redirect to /users
 
 const port = process.env.PORT || 5000;
 
